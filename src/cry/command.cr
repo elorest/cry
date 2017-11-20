@@ -1,4 +1,5 @@
 require "cli"
+require "colorize"
 
 module Cry
   class Command < ::Cli::Command
@@ -6,6 +7,7 @@ module Cry
 
     class Options
       arg "code", desc: "Crystal code or .cr file to execute within the application scope", default: ""
+      bool ["-l", "--log"], desc: "Prints results of previous runs"
       string ["-e", "--editor"], desc: "Prefered editor: [vim, nano, pico, etc], only used when no code or .cr file is specified", default: "vim"
       string ["-b", "--back"], desc: "Runs prevous command files: 'amber exec -b [times_ago]'", default: "0"
     end
@@ -25,21 +27,34 @@ module Cry
     end
 
     def run
-      Dir.mkdir("tmp") unless Dir.exists?("tmp")
-
-      unless args.code.blank? || File.exists?(args.code)
-        File.write(@filename, "puts (#{args.code}).inspect")
+      if args.log?
+        logs = Dir.glob("./tmp/*_console_result.log")
+        str = String.build do |s|
+          logs.sort.reverse.each_with_index do |f, i|
+            s.puts "cry --back #{i + 1}".colorize(:yellow).mode(:underline)
+            s.puts File.read(f.gsub("_result.log", ".cr")).colorize(:light_green)
+            s.puts "################################################################################"
+            s.puts File.read(f).colorize(:light_blue)
+            s.puts "\n"
+          end
+        end
+        system("echo '#{str}' | less")
       else
-        prepare_file
-        system("#{options.editor} #{@filename}")
+        Dir.mkdir("tmp") unless Dir.exists?("tmp")
+
+        unless args.code.blank? || File.exists?(args.code)
+          File.write(@filename, "puts (#{args.code}).inspect")
+        else
+          prepare_file
+          system("#{options.editor} #{@filename}")
+        end
+
+        result = ""
+        result = `crystal eval 'require "#{@filename}";'` if File.exists?(@filename)
+
+        File.write(@filename.sub("console.cr", "console_result.log"), result) unless result.blank?
+        puts result
       end
-
-      result = ""
-      result = `crystal eval 'require "#{@filename}";'` if File.exists?(@filename)
-
-      File.write(@filename.sub("console.cr", "console_result.log"), result) unless result.blank?
-      puts result
-      result
     end
   end
 end
