@@ -32,13 +32,14 @@ module Cry
         str = String.build do |s|
           logs.sort.reverse.each_with_index do |f, i|
             s.puts "cry --back #{i + 1}".colorize(:yellow).mode(:underline)
-            s.puts File.read(f.gsub("_result.log", ".cr")).colorize(:light_green)
-            s.puts "################################################################################"
-            s.puts File.read(f).colorize(:light_blue)
+            s.puts "\n# Code:".colorize.colorize(:dark_gray)
+            s.puts File.read(f.gsub("_result.log", ".cr")).colorize(:light_gray)
+            s.puts "\n# Results:".colorize(:dark_gray)
+            s.puts File.read(f).colorize(:light_gray)
             s.puts "\n"
           end
         end
-        system("echo '#{str}' | less")
+        system("echo '#{str}' | less -r")
       else
         Dir.mkdir("tmp") unless Dir.exists?("tmp")
 

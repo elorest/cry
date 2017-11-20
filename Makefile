@@ -7,6 +7,7 @@ install: build link
 build:
 	@echo "Building cry in $(shell pwd)"
 	@mkdir -p $(OUT_DIR)
+	@shards
 	@crystal build -o $(OUT_DIR)/cry src/cry.cr -p --no-debug
 
 run:
@@ -19,5 +20,5 @@ link:
 	@ln -s `pwd`/bin/cry /usr/local/bin/cry
 
 force_link:
-	@echo "Symlinking `pwd`/bin/cry to /usr/local/bin/amber"
+	@echo "Symlinking `pwd`/bin/cry to /usr/local/bin/cry"
 	@ln -sf `pwd`/bin/cry /usr/local/bin/cry
