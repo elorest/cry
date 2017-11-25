@@ -7,6 +7,7 @@ install: build link
 build:
 	@echo "Building cry in $(shell pwd)"
 	@mkdir -p $(OUT_DIR)
+	@shards
 	@crystal build -o $(OUT_DIR)/cry src/cry.cr -p --no-debug
 
 run:
