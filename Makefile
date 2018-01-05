@@ -23,4 +23,4 @@ link:
 
 force_link:
 	@echo "Symlinking `pwd`/bin/cry to /usr/local/bin/cry"
-	@ln -sf `pwd`/bin/cry /usr/local/bin/cry
+	@sudo ln -sf `pwd`/bin/cry /usr/local/bin/cry
