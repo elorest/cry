@@ -5,8 +5,8 @@ shards:
     version: 0.6.3
 
   cli:
-    github: mosop/cli
-    version: 0.6.10
+    github: amberframework/cli
+    version: 0.7.0
 
   optarg:
     github: mosop/optarg
