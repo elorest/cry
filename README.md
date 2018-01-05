@@ -30,6 +30,8 @@ brew install elorest/crystal/cry
    - `cry scripts/stuff.cr`
 1. *back*: open and previous run in editor mode.
    - `cry -b 1` ... copies previous run to tmp file for editing and runs when editor is closed.
+1. *loop*: continuously edit and execute code.
+   - `cry -o -b 1` ... copies previous run to tmp file for editing and runs when editor is closed in a loop.
 1. *log*: show a log of all previous runs.
    - `cry --log`
 
@@ -48,6 +50,7 @@ Options:
   -e, --editor  Prefered editor: [vim, nano, pico, etc], only used when no code or .cr file is specified
                 (default: vim)
   -l, --log     Prints results of previous run
+  -o, --loop    Runs editor in a loop (can be combined with e.g. -b 1)
 ```
 
 ## Contributing
