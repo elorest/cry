@@ -1,10 +1,12 @@
 OUT_DIR=bin
 
-all: build force_link
+all: build
 
-install: build link
+install: build force_link
 
-build:
+build: $(OUT_DIR)/cry
+
+$(OUT_DIR)/cry: src/cry.cr
 	@echo "Building cry in $(shell pwd)"
 	@mkdir -p $(OUT_DIR)
 	@shards
