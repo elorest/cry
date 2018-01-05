@@ -10,7 +10,7 @@ ______
 ```sh
 curl -L https://github.com/elorest/cry/archive/master.tar.gz | tar xz
 cd cry-master/
-make
+make install
 ```
 
 OSX Homebrew
