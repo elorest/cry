@@ -1,28 +1,42 @@
-OUT_DIR=bin
+PREFIX=/usr/local
+INSTALL_DIR=$(PREFIX)/bin
+CRY_SYSTEM=$(INSTALL_DIR)/cry
+
+OUT_DIR=$(shell pwd)/bin
+CRY=$(OUT_DIR)/cry
+CRY_SOURCES=$(shell find src/ -type f -name '*.cr')
 
 all: build
 
-install: build force_link
-
-build: $(OUT_DIR)/cry
-
-$(OUT_DIR)/cry: src/** lib
-	@echo "Building cry in $(shell pwd)"
-	@mkdir -p $(OUT_DIR)
-	@crystal build -o $(OUT_DIR)/cry src/cry.cr -p --no-debug
+build: lib $(CRY)
 
 lib:
-	@shards
+	@crystal deps
+
+$(CRY): $(CRY_SOURCES) | $(OUT_DIR)
+	@echo "Building cry in $@"
+	@crystal build -o $@ src/cry.cr -p --no-debug
+
+$(OUT_DIR) $(INSTALL_DIR):
+	 @mkdir -p $@
 
 run:
-	$(OUT_DIR)/cry
+	$(CRY)
+
+install: build | $(INSTALL_DIR)
+	@-rm $(CRY_SYSTEM)
+	@cp $(CRY) $(CRY_SYSTEM)
+
+link: build | $(INSTALL_DIR)
+	@echo "Symlinking $(CRY) to $(CRY_SYSTEM)"
+	@ln -s $(CRY) $(CRY_SYSTEM)
+
+force_link: build | $(INSTALL_DIR)
+	@echo "Symlinking $(CRY) to $(CRY_SYSTEM)"
+	@ln -sf $(CRY) $(CRY_SYSTEM)
 
 clean:
-	rm -rf  $(OUT_DIR) .crystal .shards libs lib
+	rm -rf $(CRY)
 
-link:
-	@ln -s `pwd`/bin/cry /usr/local/bin/cry
-
-force_link:
-	@echo "Symlinking `pwd`/bin/cry to /usr/local/bin/cry"
-	@ln -sf `pwd`/bin/cry /usr/local/bin/cry
+distclean:
+	rm -rf $(CRY) .crystal .shards libs lib
