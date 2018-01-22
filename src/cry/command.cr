@@ -3,13 +3,16 @@ require "colorize"
 
 module Cry
   class Command < ::Cli::Command
-    @filename = "./tmp/#{Time.now.epoch_ms}_console.cr"
+
+    @filename_seed : Int64
+    @filename_seed = Time.now.epoch_ms
 
     class Options
       arg "code", desc: "Crystal code or .cr file to execute within the application scope", default: ""
       bool ["-l", "--log"], desc: "Prints results of previous runs"
-      string ["-e", "--editor"], desc: "Prefered editor: [vim, nano, pico, etc], only used when no code or .cr file is specified", default: "vim"
-      string ["-b", "--back"], desc: "Runs prevous command files: 'amber exec -b [times_ago]'", default: "0"
+      string ["-e", "--editor"], desc: "Prefered editor: [vim, nano, pico, etc], only used when no code or .cr file is specified", default: ENV["EDITOR"]? || "vim"
+      string ["-b", "--back"], desc: "Runs previous command files: 'amber exec -b [times_ago]'", default: "0"
+      bool ["-r", "--repeat"], desc: "Runs editor in a loop"
     end
 
     class Help
@@ -19,14 +22,23 @@ module Cry
     def prepare_file
       _filename = if File.exists?(args.code)
                     args.code
-                  elsif options.back.to_i(strict: false) > 0
-                    Dir.glob("./tmp/*_console.cr").sort.reverse[options.back.to_i(strict: false) - 1]?
+                  elsif @back.not_nil! > 0
+                    Dir.glob("./tmp/*_console.cr").sort.reverse[@back.not_nil! - 1]?
                   end
 
-      system("cp #{_filename} #{@filename}") if _filename
+      system("cp #{_filename} #{filename}") if _filename && File.exists?(_filename)
+    end
+
+    def filename
+      "./tmp/#{@filename_seed}_console.cr"
+    end
+    def result_filename
+      "./tmp/#{@filename_seed}_console_result.log"
     end
 
     def run
+      @back = if args.repeat?; 1 else args.back.to_i(strict: false) || 0 end
+
       if args.log?
         logs = Dir.glob("./tmp/*_console_result.log")
         str = String.build do |s|
@@ -43,18 +55,29 @@ module Cry
       else
         Dir.mkdir("tmp") unless Dir.exists?("tmp")
 
-        unless args.code.blank? || File.exists?(args.code)
-          File.write(@filename, "puts (#{args.code}).inspect")
-        else
-          prepare_file
-          system("#{options.editor} #{@filename}")
+        loop do
+          unless args.code.blank? || File.exists?(args.code)
+            File.write(filename, "puts (#{args.code}).inspect")
+          else
+            prepare_file
+            system("#{options.editor} #{filename}")
+          end
+
+          break unless File.exists?(filename)
+
+          result = ""
+          result = `crystal eval 'require "#{filename}";'`
+
+          File.write(result_filename, result) unless result.nil?
+          puts result
+
+          break unless args.repeat?
+          puts "\nENTER to edit, q to quit"
+          input = gets
+          break if input=~ /^q/i
+
+          @filename_seed = Time.now.epoch_ms
         end
-
-        result = ""
-        result = `crystal eval 'require "#{@filename}";'` if File.exists?(@filename)
-
-        File.write(@filename.sub("console.cr", "console_result.log"), result) unless result.blank?
-        puts result
       end
     end
   end
