@@ -10,7 +10,7 @@ targets:
 
 dependencies:
   cli:
-    github: amberframework/cli
+    github: mosop/cli
     version: ~> 0.7.0
 
 crystal: 0.24.1
