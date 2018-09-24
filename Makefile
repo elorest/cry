@@ -24,7 +24,7 @@ run:
 	$(CRY)
 
 install: build | $(INSTALL_DIR)
-	@-rm $(CRY_SYSTEM)
+	@rm -f $(CRY_SYSTEM)
 	@cp $(CRY) $(CRY_SYSTEM)
 
 link: build | $(INSTALL_DIR)
