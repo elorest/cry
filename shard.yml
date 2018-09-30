@@ -13,6 +13,6 @@ dependencies:
     github: amberframework/cli
     version: ~> 0.7.0
 
-crystal: 0.24.1
+crystal: 0.26.1
 
 license: MIT

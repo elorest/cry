@@ -8,12 +8,10 @@ CRY_SOURCES=$(shell find src/ -type f -name '*.cr')
 
 all: build
 
-build: lib $(CRY)
-
 lib:
 	@crystal deps
 
-$(CRY): $(CRY_SOURCES) | $(OUT_DIR)
+build: $(CRY_SOURCES) | $(OUT_DIR)
 	@echo "Building cry in $@"
 	@crystal build -o $@ src/cry.cr -p --no-debug
 
