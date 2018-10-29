@@ -1,6 +1,6 @@
-# CRy
+# CRY
 
-Evaluated crystal code from files and command lines similar to edit in ruby pry.
+Evaluate crystal code from files and command lines similar to edit in ruby pry.
 
 ## Installation
 
