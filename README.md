@@ -64,4 +64,4 @@ Options:
 ## Contributors
 
 - [elorest](https://github.com/elorest) Isaac Sloan - creator, maintainer
-- [ladyelorest](https://github.com/ladyelorest) Shauna Sloan - documentation
+- [lady-elorest](https://github.com/lady-elorest) Shauna Sloan - documentation
