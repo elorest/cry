@@ -10,9 +10,9 @@ targets:
 
 dependencies:
   cli:
-    github: mosop/cli
-    version: ~> 0.7.0
+    github: drujensen/cli
+    version: ~> 0.8.0
 
-crystal: 0.26.1
+crystal: 0.31.1
 
 license: MIT
