@@ -1,16 +1,16 @@
 version: 1.0
 shards:
   callback:
-    github: mosop/callback
-    version: 0.6.3
+    github: drujensen/callback
+    version: 0.7.1
 
   cli:
-    github: amberframework/cli
-    version: 0.7.0
+    github: drujensen/cli
+    version: 0.8.0
 
   optarg:
-    github: mosop/optarg
-    version: 0.5.8
+    github: drujensen/optarg
+    version: 0.7.0
 
   string_inflection:
     github: mosop/string_inflection
