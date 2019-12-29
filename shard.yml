@@ -1,5 +1,5 @@
 name: cry
-version: 0.5.0
+version: 0.5.1
 
 authors:
   - Isaac Sloan <isaac@isaacsloan.com>
@@ -13,6 +13,6 @@ dependencies:
     github: drujensen/cli
     version: ~> 0.8.0
 
-crystal: 0.31.1
+crystal: 0.32.1
 
 license: MIT
