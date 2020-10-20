@@ -1,3 +1,3 @@
 module Cry
-  VERSION = "0.5.1"
+  VERSION = "0.35.1"
 end
