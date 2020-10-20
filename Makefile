@@ -11,7 +11,7 @@ all: build
 build: lib $(CRY)
 
 lib:
-	@crystal deps
+	@shards build -v
 
 $(CRY): $(CRY_SOURCES) | $(OUT_DIR)
 	@echo "Building cry in $@"

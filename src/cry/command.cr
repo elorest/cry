@@ -5,7 +5,7 @@ module Cry
   class Command < ::Cli::Command
 
     @filename_seed : Int64
-    @filename_seed = Time.now.to_unix_ms
+    @filename_seed = Time.utc.to_unix_ms
 
     class Options
       arg "code", desc: "Crystal code or .cr file to execute within the application scope", default: ""
@@ -76,7 +76,7 @@ module Cry
           input = gets
           break if input=~ /^q/i
 
-          @filename_seed = Time.now.to_unix_ms
+          @filename_seed = Time.utc.to_unix_ms
         end
       end
     end
