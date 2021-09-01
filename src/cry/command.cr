@@ -13,6 +13,7 @@ module Cry
       string ["-e", "--editor"], desc: "Prefered editor: [vim, nano, pico, etc], only used when no code or .cr file is specified", default: ENV["EDITOR"]? || "vim"
       string ["-b", "--back"], desc: "Runs previous command files: 'amber exec -b [times_ago]'", default: "0"
       bool ["-r", "--repeat"], desc: "Runs editor in a loop"
+      bool ["-d", "--destructive"], desc: "Edits and runs file destructively"
     end
 
     class Help
@@ -30,8 +31,13 @@ module Cry
     end
 
     def filename
-      "./tmp/#{@filename_seed}_console.cr"
+      if args.destructive? && File.exists?(args.code)
+        args.code
+      else
+        "./tmp/#{@filename_seed}_console.cr"
+      end
     end
+
     def result_filename
       "./tmp/#{@filename_seed}_console_result.log"
     end
@@ -59,7 +65,7 @@ module Cry
           unless args.code.blank? || File.exists?(args.code)
             File.write(filename, "puts (#{args.code}).inspect")
           else
-            prepare_file
+            prepare_file unless args.destructive? 
             system("#{options.editor} #{filename}")
           end
 
