@@ -1,18 +1,14 @@
 version: 2.0
 shards:
   callback:
-    git: https://github.com/drujensen/callback.git
-    version: 0.7.1
+    git: https://github.com/amberframework/callback.git
+    version: 0.9.2
 
   cli:
-    git: https://github.com/drujensen/cli.git
-    version: 0.9.3
+    git: https://github.com/amberframework/cli.git
+    version: 0.11.4
 
   optarg:
-    git: https://github.com/drujensen/optarg.git
-    version: 0.8.0
-
-  string_inflection:
-    git: https://github.com/mosop/string_inflection.git
-    version: 0.2.1
+    git: https://github.com/amberframework/optarg.git
+    version: 0.9.3
 
